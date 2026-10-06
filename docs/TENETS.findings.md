@@ -36,6 +36,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   - **Conflict with Tenet 2:** Tenet 2 promises *"no hidden variable shadow surprises"* ([line 21](file:///Volumes/dev/me/jai/docs/TENETS.md#L21)).
 * **Recommendation:**
   Replace dynamic "unbinding upon move" with standard **lexical variable shadowing** (e.g., `let x = ...` creates a new lexical scope binding, as in Rust). Shadowing solves AI variable naming churn (`user1`, `user2`) at parse time, is flow-independent, and transpiles cleanly to all targets via deterministic compiler renaming (`x_1`, `x_2`).
+* **Resolution:** **Adopted Lexical Variable Shadowing.** Updated Tenet 16 to replace flow-dependent dead identifier reuse with explicit lexical variable shadowing (`let x = ...`), eliminating compiler pipeline circularity while preserving reduction in variable naming churn and enabling deterministic target renaming. Also clarified Tenet 2.
 
 ---
 

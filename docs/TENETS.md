@@ -17,8 +17,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Rationale:** Ambiguity, multiple valid ways to write the exact same construct, and complex operator precedence increase the probability of syntax errors and hallucinated patterns.
 * **Principles:**
   - One clear, canonical way to express any given operation.
-  - Context-free and regular grammar constructs that are easy for both LLM probability distributions and compiler parsers to predict and validate.
-  - Strict syntax rules that disallow ambiguous edge cases (e.g., mandatory statement-terminating semicolons with zero automatic insertion heuristics, no implicit type coercions, no hidden variable shadow surprises).
+  - Strict syntax rules that disallow ambiguous edge cases (e.g., mandatory statement-terminating semicolons with zero automatic insertion heuristics, no implicit type coercions, no hidden scope-escaping variable shadowing).
 
 ---
 
@@ -135,7 +134,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Principles:**
   - **Immutable by Default:** All variable bindings and function parameters are strictly immutable unless explicitly declared with `mut`.
   - **Move Semantics by Default:** Passing a value to another function or binding moves ownership by default, eliminating accidental shared mutable aliasing across boundaries.
-  - **Dead Identifier Reuse:** Once a variable's value has been moved, that identifier becomes unbound and immediately eligible for reuse in the local scope, as if it had never been declared before. This dramatically reduces identifier churn and synthetic variable naming (e.g. `user1`, `user2`, `updated_user`) for AI agents.
+  - **Explicit Lexical Shadowing:** Re-declaring a binding with `let` in the same scope legally shadows prior bindings of the same identifier. This eliminates synthetic variable churn (`user1`, `user2`, `updated_user`) while preserving deterministic lexical scoping and enabling unambiguous transpiler renaming (`user_1`, `user_2`) for targets that disallow shadowing.
   - **Zero Aliasing Ambiguity:** Multiple concurrent mutable references to the same data are strictly forbidden at compile time.
 
 ## 17. Exhaustive Null Safety (No Implicit Missing Values)
