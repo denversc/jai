@@ -224,6 +224,8 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   While Tick statically enforces non-aliasing and ownership, lowering to Swift (ARC) can cause silent memory leaks if cyclic structures are permitted, while lowering to Rust requires satisfying `rustc` without unsafe blocks. The document does not specify how memory invariants are preserved during code emission.
 * **Recommendation:**
   Add a dedicated principle under transpilation invariants: **"Deterministic Memory Model Lowering"**, ensuring structures are acyclic by construction (preventing ARC leaks in Swift), lifetimes are cleanly erased for GC targets (Python, Go, TS), and generated Rust is guaranteed borrow-checker compliant without raw pointers.
+* **Resolution:** **Adopted Deterministic Memory Model Lowering Principle.** Updated Tenet 23 to establish lowering rules across memory runtimes: acyclic structures preventing ARC retain leaks in Swift, clean lifetime erasure in GC targets, and guaranteed borrow-check compliance in Rust without unsafe blocks.
+
 
 ---
 

@@ -194,6 +194,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ## 23. Transpilation-First Invariants (Pivot-Language Purity)
 * **Rationale:** Tick code must transpile faithfully and idiomatically to targets like Rust, Python, TypeScript, Swift, and Kotlin.
 * **Principles:**
-  - Language primitives must represent the clean intersection of modern target semantics, avoiding reliance on quirks unique to any single host runtime.
-  - Deterministic execution semantics and value equivalence ensure that business logic behaves identically across all targets (Python, Swift, Rust), without depending on host-specific physical memory layouts or garbage-collection implementations.
-  - Standard library abstractions are designed to map to target language idioms rather than forcing heavy runtime shims.
+  - **Intersection Semantics:** Language primitives must represent the clean intersection of modern target semantics, avoiding reliance on quirks unique to any single host runtime.
+  - **Deterministic Target Equivalence:** Deterministic execution semantics and value equivalence ensure that business logic behaves identically across all targets (Python, Swift, Rust), without depending on host-specific physical memory layouts or garbage-collection implementations.
+  - **Deterministic Memory Model Lowering:** Static ownership and borrowing invariants proven by Tick ensure sound lowering across memory runtimes: data structures are acyclic by default to prevent retain leaks under ARC (Swift), lifetimes are cleanly erased for GC targets (Python, Go, TypeScript), and emitted code is guaranteed to pass `rustc` borrow checking without requiring `unsafe` blocks.
+  - **Target-Idiomatic Mapping:** Standard library abstractions are designed to map to target language idioms rather than forcing heavy runtime shims.
+
