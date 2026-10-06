@@ -85,6 +85,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   - In Go and Python, passing arguments passes references or shallow copies. If Tick attempts to mandate move semantics at runtime in these targets, it would require invasive runtime shims or defensive cloning.
 * **Recommendation:**
   Clarify that Rust-style ownership, lifetimes, and borrowing operate strictly as **compile-time static verification invariants within the Tick compiler frontend**. Because Tick proves non-aliasing and consumption at compile time, the code can safely lower to plain native references in GC targets (Python, TS, Go) and moves/borrows in non-GC targets (Rust, Swift) without any runtime overhead.
+* **Resolution:** **Clarified Ownership as Compile-Time Proof System.** Updated Tenet 3 to explicitly frame Rust-style ownership, lifetimes, and borrow checks as frontend static verification guarantees that cleanly lower to native references in GC languages and native moves/borrows in systems targets without runtime shims.
 
 ---
 

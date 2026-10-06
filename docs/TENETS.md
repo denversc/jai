@@ -25,9 +25,9 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ## 3. Strict, Explicit Static Semantics & Rust-Style Ownership
 * **Rationale:** Latent bugs and undefined behavior across target platforms are costly to debug. Strong invariants allow agents to reason about code locally without whole-program global inference.
 * **Principles:**
-  - Rust-inspired ownership, borrowing, and lifetime semantics enforce resource safety statically.
-  - Strong, static typing where all types, effects, and mutability are explicitly knowable.
-  - Code that compiles is guaranteed to map soundly to both garbage-collected and manually managed target environments.
+  - **Compile-Time Ownership & Borrow Verification:** Rust-inspired ownership, borrowing, and lifetime semantics operate strictly as compile-time static proof invariants within the frontend. Because the compiler statically proves non-aliasing and consumption invariants before code emission, the generated code safely lowers to idiomatic, native references in garbage-collected targets (Python, TypeScript, Go) and moves/borrows in systems targets (Rust, Swift) with zero runtime shims.
+  - **Explicit Static Typing:** Strong, static typing where all types, effects, and mutability are explicitly knowable.
+  - **Sound Multi-Target Lowering:** Code that compiles is guaranteed to map soundly to both garbage-collected and manually managed target environments.
 
 ---
 
