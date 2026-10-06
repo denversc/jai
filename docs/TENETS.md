@@ -164,6 +164,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Principles:**
   - **All-in-One Canonical Binary:** The core `tick` toolchain natively integrates formatting, linting, type-checking, testing, transpilation, and local test interpretation into a single binary.
   - **Zero Config Churn:** Sane, strict, opinionated defaults work out of the box without requiring sprawling configuration files across repositories.
+  - **Minimal Configuration & Pure Code Generation (`tick.toml`):** A single minimal configuration file (`tick.toml`) configures Tick compiler and transpilation settings. Tick focuses strictly on generating source code and source maps, leaving downstream project packaging and target package manifests (`package.json`, `Cargo.toml`, `pyproject.toml`) to the developer or authoring agent.
   - **Uniform Machine-Readable Interface:** Every toolchain command provides standardized structured output (e.g., `--format=json`) so agents can parse results, errors, and diffs programmatically without brittle text scraping.
 
 ## 20. Stable Error Codes & Actionable Repair Recipes

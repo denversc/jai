@@ -197,6 +197,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   Tenet 19 mandates a unified CLI binary but omits how dependencies are declared and resolved across target ecosystems. If a Tick program depends on external packages across targets, an AI agent must not be forced to manually synchronize `package.json`, `Cargo.toml`, `pyproject.toml`, and `go.mod`.
 * **Recommendation:**
   Add a dedicated tenet: **"Unified Cross-Target Package & Manifest Synthesis"**, specifying a single declarative manifest (`tick.pkg`) that deterministically synthesizes target-native manifests and lockfiles.
+* **Resolution:** **Adopted tick.toml for Toolchain Config; Scoped Tick to Pure Code Generation.** Updated Tenet 19 to establish `tick.toml` for toolchain options while explicitly clarifying that Tick generates pure source code (and source maps), leaving target packaging metadata and project manifests to the developer or authoring agent.
 
 ---
 
