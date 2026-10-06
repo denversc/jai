@@ -17,6 +17,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Rationale:** Ambiguity, multiple valid ways to write the exact same construct, and complex operator precedence increase the probability of syntax errors and hallucinated patterns.
 * **Principles:**
   - One clear, canonical way to express any given operation.
+  - Strictly deterministic context-free grammar constructs that are easy for both LLM probability distributions and compiler parsers to predict and validate.
   - Strict syntax rules that disallow ambiguous edge cases (e.g., mandatory statement-terminating semicolons with zero automatic insertion heuristics, no implicit type coercions, no hidden scope-escaping variable shadowing).
 
 ---
@@ -91,11 +92,12 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Contract-Driven Verification & Testing:** Contracts can be statically validated during compile-time evaluation (CTFE), enforced during test and debug runs, and used to power automatic property-based fuzz testing.
   - **Contract-as-Interface:** Calling agents rely entirely on the function's contract guarantees rather than needing to parse the function's internal body.
 
-## 11. Single-Pass Autoregressive Parsability (LL(1) / Deterministic Grammar)
-* **Rationale:** LLMs generate code strictly autoregressively (left-to-right, one token at a time) without lookahead or backtracking. Languages that require complex lookahead, backtracking, or type-feedback during parsing (such as C++ templates or syntax requiring symbol tables to resolve) induce high-frequency syntax generation errors.
+## 11. Deterministic, Unambiguous Grammar with Bounded Lookahead (Pratt / LL(k))
+* **Rationale:** While LLMs generate code strictly autoregressively (left-to-right, one token at a time) without future lookahead, compiler parsing is deterministic with bounded lookahead (e.g., Pratt parsing for expressions and LL(k) with small k for declarations). Languages that require unbounded lookahead, backtracking, or type-feedback during parsing (such as C++ templates or syntax requiring symbol tables to resolve) induce high-frequency syntax generation errors.
 * **Principles:**
-  - **Unambiguous Prefix Grammar:** Constructs declare their identity up front via explicit prefix keywords (`fn`, `let`, `type`, `loop`), allowing both token prediction and compiler parsing to proceed deterministically without lookahead ambiguities.
-  - **Zero Backtracking:** The grammar is strictly context-free and parseable in a single deterministic pass with zero lexer hacks or semantic feedback loops.
+  - **Unambiguous Prefix Grammar:** Constructs declare their identity up front via explicit prefix keywords (`fn`, `let`, `type`, `loop`), allowing both token prediction and compiler parsing to proceed deterministically with bounded lookahead.
+  - **Unambiguous Generic Delimiters:** Generic parameters use unambiguous delimiters (such as bracketed generics `[T]`) to eliminate lookahead ambiguities and parser backtracking.
+  - **Zero Backtracking & Single-Pass Expression Parsing:** The grammar is strictly context-free and parseable with bounded lookahead (combining LL(k) declarations and Pratt expression parsing) with zero lexer hacks or semantic feedback loops.
   - **Sub-Millisecond Parse Performance:** Deterministic parsing enables instant feedback for AI agent drafting and validation loops.
 
 ## 12. Composable, Flat Typing over Deep Inheritance (Traits Only)

@@ -51,6 +51,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   - Retitle Tenet 11 to **"Deterministic, Unambiguous Grammar with Bounded Lookahead (Pratt / LL(k))"**.
   - Remove "regular grammar" from Tenet 2 and replace with "strictly deterministic context-free grammar".
   - Explicitly specify that generic parameters use unambiguous delimiters (e.g., bracketed generics `List[T]`) to eliminate lookahead ambiguities.
+* **Resolution:** **Adopted Bounded Lookahead Grammar Corrections.** Retitled Tenet 11 to 'Deterministic, Unambiguous Grammar with Bounded Lookahead (Pratt / LL(k))', removed inaccurate 'regular grammar' phrasing from Tenet 2, and clarified disambiguated bracketed generics.
 
 ---
 
