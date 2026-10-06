@@ -7,9 +7,10 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ## 1. High Token Efficiency (Context Optimization)
 * **Rationale:** Context windows in Large Language Models (LLMs) are finite and directly impact cost, latency, and reasoning depth. Verbose boilerplate consumes unnecessary attention budget.
 * **Principles:**
-  - Maximize semantic density per token.
-  - Minimize ceremony, repetitive boilerplate, and redundant declarations without sacrificing semantic precision.
-  - Choose compact, expressive syntactic constructs that LLM tokenizers compress effectively.
+  - **Maximize Semantic Density:** Maximize semantic density per token.
+  - **Zero Boilerplate Ceremony:** Minimize ceremony, repetitive boilerplate, and redundant declarations without sacrificing semantic precision.
+  - **Compact Tokenizer Alignment:** Choose compact, expressive syntactic constructs that LLM tokenizers compress effectively.
+  - **Semantic Token ROI (Investment Over Waste):** High token efficiency does not mean omitting specification; tokens invested in formal contracts (`pre`/`post`), type invariants, and intent anchors (`@why`) yield high net token savings by eliminating multi-file context expansion, defensive runtime boilerplate, and iterative debugging turns.
 
 ---
 

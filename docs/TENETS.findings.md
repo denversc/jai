@@ -146,6 +146,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   - Without an explicit rationale, this appears to be a direct philosophical tension.
 * **Recommendation:**
   Add a reconciling principle to Tenet 1 defining "Semantic ROI": clarify that tokens invested in formal contracts and intent anchors yield high net token savings by eliminating multi-file prompt context expansion and iterative debugging turns.
+* **Resolution:** **Defined Semantic Token ROI Principle.** Updated Tenet 1 to define the Semantic Token ROI, formally reconciling token efficiency with contracts and intent anchors by establishing that specification tokens yield massive net savings across agent context and debugging cycles.
 
 ---
 
