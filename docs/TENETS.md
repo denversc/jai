@@ -10,6 +10,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Maximize Semantic Density:** Maximize semantic density per token.
   - **Zero Boilerplate Ceremony:** Minimize ceremony, repetitive boilerplate, and redundant declarations without sacrificing semantic precision.
   - **Compact Tokenizer Alignment:** Choose compact, expressive syntactic constructs that LLM tokenizers compress effectively.
+  - **Empirical Tokenizer Alignment (BPE Vocabulary Co-Design):** Keywords, operators, delimiter sequences, and canonical formatting conventions (such as indentation width) are empirical choices co-designed and benchmarked against frontier LLM tokenizers to guarantee single-token representations and eliminate multi-token punctuation splintering.
   - **Semantic Token ROI (Investment Over Waste):** High token efficiency does not mean omitting specification; tokens invested in formal contracts (`pre`/`post`), type invariants, and intent anchors (`@why`) yield high net token savings by eliminating multi-file context expansion, defensive runtime boilerplate, and iterative debugging turns.
 
 ---

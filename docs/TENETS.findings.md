@@ -215,6 +215,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   Tenets 1 and 9 discuss token efficiency conceptually, but human intuition on brevity frequently fails tokenizer reality. Multi-character punctuation sequences (`::`, `:=`, `->`), variable casing (`camelCase` vs `snake_case`), and 2-space vs 4-space indentation tokenize with radically different efficiency across frontier models (tiktoken `cl100k`/`o200k`, Llama, Claude, Gemini).
 * **Recommendation:**
   Add an empirical principle under the Token Efficiency tenet: **"Empirical Tokenizer Alignment (BPE Vocabulary Co-Design)"**, requiring keywords, operators, and formatting conventions to be benchmarked and aligned with major BPE vocabularies for maximum token compression.
+* **Resolution:** **Adopted Empirical Tokenizer Alignment Principle.** Updated Tenet 1 to mandate empirical BPE vocabulary co-design for keywords, operators, and formatting conventions, maximizing single-token density across frontier LLM tokenizers.
 
 ---
 
