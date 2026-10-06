@@ -234,6 +234,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   Transpiled languages frequently fail when they bundle a heavy runtime library shim (e.g., Kotlin Multiplatform, Dart), resulting in binary bloat and difficult interop. Tick standard library types (`Array`, `Map`, `Option`, `Result`) must compile away into native standard primitives (`Vec` in Rust, `Array` in TS, `list` in Python, slices in Go).
 * **Recommendation:**
   Add a dedicated tenet: **"Zero-Fat Standard Library & Direct Semantic Lowering"**, establishing that Tick standard abstractions have zero runtime footprint and compile away directly to target-native primitives.
+* **Resolution:** **Adopted Dual Distribution & Aggregated Minimal Shims.** Updated Tenet 23 to establish dual consumption modes: linking an official pre-packaged Tick standard library package, or tree-shaking and synthesizing strictly the minimal required shims into a custom namespace with multi-compilation aggregation for minimal bloat.
 
 ---
 
