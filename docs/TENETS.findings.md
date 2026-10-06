@@ -170,6 +170,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   As a pivot language, Tick cannot exist in isolation. Real-world applications require interfacing with target ecosystem libraries (e.g., PyTorch in Python, React/Express in TypeScript, Tokio in Rust, SwiftUI in Swift). Currently, there is zero mention of external declarations (`extern`), native escape hatches, or boundary marshalling. Without a structured interop model, AI agents will hallucinate target API wrappers or inject raw strings.
 * **Recommendation:**
   Add a dedicated tenet: **"Bounded Foreign Interoperability & Declarative Native Contracts"**, defining strictly typed external declarations (`extern "ts" ...`), safe boundary data marshalling, and symmetric export ABIs without raw string injection.
+* **Resolution:** **Ignored (Deferred to Language Design Specification).** Decided that FFI / native interoperability is a detailed language design concern rather than a foundational tenet for TENETS.md.
 
 ---
 
