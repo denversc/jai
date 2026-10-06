@@ -134,6 +134,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   - If trailing commas are merely "supported", both `[a, b]` and `[a, b,]` are valid syntax, creating two valid representations for every list, call site, and struct literal.
 * **Recommendation:**
   Enforce a deterministic canonical rule: trailing commas are **mandatory on multi-line lists** and **strictly prohibited on single-line lists**.
+* **Resolution:** **Adopted Canonical Layout-Driven Trailing Commas.** Updated Tenet 15 and Tenet 8 to mandate trailing commas on multi-line lists and prohibit them on single-line lists, ensuring clean 1-line diffs while preserving single canonical representation.
 
 ---
 

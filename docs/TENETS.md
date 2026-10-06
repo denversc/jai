@@ -74,6 +74,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Single Function Syntax:** Unified declaration syntax for free functions, methods, and closures/lambdas.
   - **Single Iteration Model:** One unified loop construct rather than multiple overlapping primitives (`for`, `while`, `do-while`, `forEach`).
   - **Strict Boolean Conditions:** Conditionals (`if`, loop guards) require an explicit `bool` expression. No implicit "truthiness" (e.g., non-zero numbers, non-empty strings, or implicit null pointer conversions).
+  - **Layout-Deterministic Delimiters:** Formatting rules (such as mandatory trailing commas on multi-line lists and forbidden on single-line lists) are compiler-enforced, preventing stylistic variance.
   - **Zero Syntactic Synonyms:** Eliminates stylistic fragmentation across AI-authored codebases.
 
 ## 9. Token-Dense Grammar without Punitive Punctuation
@@ -128,7 +129,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ## 15. Semantic Diff & Patch Stability (Minimal Syntax Churn)
 * **Rationale:** AI agents modify codebases primarily through line diffs and targeted block replacements. Syntactic choices that trigger cascading edits (like re-indenting entire files or juggling missing commas on adjacent lines) inflate patch token costs and create merge/patch collisions.
 * **Principles:**
-  - **Trailing Commas Supported Everywhere:** Trailing commas in argument lists, struct declarations, match arms, and arrays mean adding or removing an element touches exactly one isolated line.
+  - **Canonical Trailing Commas:** Trailing commas are mandatory for all multi-line lists (argument lists, struct fields, match arms, arrays) to ensure modifying an element touches exactly one isolated line, and strictly forbidden on single-line lists, enforcing exactly one canonical representation per layout.
   - **Zero Indentation-Cascade Traps:** Block scoping prevents massive whitespace reflow diffs when nesting or un-nesting logic.
   - **Localized Statement Boundaries:** Statements and declarations are self-terminating or clearly bounded, ensuring patch tools and agents can apply atomic, surgical edits.
 
