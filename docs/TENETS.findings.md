@@ -122,6 +122,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   - A true single-pass compiler resolves symbols and emits code during parsing (which strictly demands forward declarations, like C). Order-independent declarations fundamentally require a **multi-pass compiler** (Pass 1: parse grammar to AST and register symbols; Pass 2: resolve symbols and typecheck).
 * **Recommendation:**
   Disambiguate parsing from semantic analysis: specify that **syntactic parsing** is single-pass with bounded lookahead, while **semantic analysis and code generation** are explicitly multi-pass to guarantee order independence.
+* **Resolution:** **Decoupled Single-Pass Syntactic Parsing from Multi-Pass Semantic Checking.** Updated Tenet 11 and Tenet 18 to explicitly define Pass 1 as pure, single-pass AST syntactic construction with zero semantic feedback, followed by subsequent semantic passes that validate types and resolve symbols across the full AST, guaranteeing order-independent declarations.
 
 ---
 

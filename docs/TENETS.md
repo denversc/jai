@@ -92,13 +92,14 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Multi-Tier Contract Verification:** Contracts are evaluated at compile time during CTFE when expressions operate on compile-time constants; a small, tractable subset of simple structural invariants can be verified statically without a heavy generic solver, while general contracts are enforced via runtime assertions in debug/test builds and leveraged for property-based fuzz testing.
   - **Contract-as-Interface:** Calling agents rely entirely on the function's contract guarantees rather than needing to parse the function's internal body.
 
-## 11. Deterministic, Unambiguous Grammar with Bounded Lookahead (Pratt / LL(k))
-* **Rationale:** While LLMs generate code strictly autoregressively (left-to-right, one token at a time) without future lookahead, compiler parsing is deterministic with bounded lookahead (e.g., Pratt parsing for expressions and LL(k) with small k for declarations). Languages that require unbounded lookahead, backtracking, or type-feedback during parsing (such as C++ templates or syntax requiring symbol tables to resolve) induce high-frequency syntax generation errors.
+## 11. Decoupled, Single-Pass Syntactic Parsing (Zero Semantic Feedback)
+* **Rationale:** While LLMs generate code strictly autoregressively (left-to-right, one token at a time) without future lookahead, compiler parsing is deterministic with bounded lookahead. Pass 1 is strictly a single-pass syntactic check that constructs a valid AST from the token stream using bounded lookahead (Pratt parsing for expressions, LL(k) for declarations), completely independent of symbol tables or type information. Languages that require unbounded lookahead, backtracking, or semantic type-feedback during parsing (such as C/C++ where parsing depends on symbol tables to distinguish types from expressions) induce high-frequency syntax generation errors.
 * **Principles:**
+  - **Pure Single-Pass Syntactic AST Construction (Pass 1):** Pass 1 is strictly a single-pass syntactic check that constructs a valid AST from the token stream using bounded lookahead (combining LL(k) declarations and Pratt expression parsing), completely independent of symbol tables or type information.
+  - **Zero Lexer/Parser Semantic Feedback:** Parsing grammar never requires knowing whether an identifier is a type, variable, or function (unlike C/C++). Lexing and parsing operate with zero semantic feedback loops.
   - **Unambiguous Prefix Grammar:** Constructs declare their identity up front via explicit prefix keywords (`fn`, `let`, `type`, `loop`), allowing both token prediction and compiler parsing to proceed deterministically with bounded lookahead.
   - **Unambiguous Generic Delimiters:** Generic parameters use unambiguous delimiters (such as bracketed generics `[T]`) to eliminate lookahead ambiguities and parser backtracking.
-  - **Zero Backtracking & Single-Pass Expression Parsing:** The grammar is strictly context-free and parseable with bounded lookahead (combining LL(k) declarations and Pratt expression parsing) with zero lexer hacks or semantic feedback loops.
-  - **Sub-Millisecond Parse Performance:** Deterministic parsing enables instant feedback for AI agent drafting and validation loops.
+  - **Sub-Millisecond Parse Performance:** Pure syntactic parsing enables instant structural feedback for AI agent drafting and validation loops.
 
 ## 12. Composable, Flat Typing over Deep Inheritance (Traits Only)
 * **Rationale:** Class implementation inheritance hierarchies introduce fragile base class problems, complex method resolution order (MRO) bugs, and hidden parent state mutations that confuse AI reasoning. Crucially, implementation inheritance maps poorly and inconsistently across targets (Rust and Go lack it entirely).
@@ -148,8 +149,9 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Universal Target Mapping:** Maps natively to the target languages' modern optionality systems (e.g., Swift optionals, Kotlin nullable types, Rust optional types, TypeScript union types).
 
 ## 18. Order-Independent Declarations (Safe Append-Only Generation)
-* **Rationale:** In languages where declaration order matters (or where forward declarations and temporal dead zones exist), AI agents frequently fail when appending new helper functions or types to existing files.
+* **Rationale:** In languages where declaration order matters (or where forward declarations and temporal dead zones exist), AI agents frequently fail when appending new helper functions or types to existing files. Because syntax parsing (Pass 1) is cleanly decoupled from semantic analysis, subsequent passes traverse the complete AST to resolve symbol tables, check types, and verify methods, making top-level declarations fully order-independent and safe for append-only generation.
 * **Principles:**
+  - **Multi-Pass Semantic Analysis:** Pure syntactic parsing produces a complete AST without requiring type feedback, allowing subsequent passes to resolve symbol tables, check types, and verify methods across the entire AST.
   - **Order-Independent Symbol Resolution:** Functions, types, traits, and constants can be declared in any order within a module or package without forward declarations or prototype headers.
   - **Safe Append-Only Modification:** AI agents can append new symbols to the end of a file with guaranteed reference resolution by earlier functions in that file.
   - **Zero Temporal Dead Zones:** Resolving top-level symbols is declarative rather than dependent on linear script execution ordering.
