@@ -98,6 +98,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   Distinguish between constant evaluation and general verification:
   - Contracts are checked during CTFE when inputs are compile-time constants.
   - General contracts are validated via runtime assertions in debug/test builds, property-based fuzz testing, and optional static formal verification solvers.
+* **Resolution:** **Scoped Static Contract Verification.** Updated Tenet 10 to clarify that CTFE validates contracts on constant inputs, that static verification is bounded to a small tractable subset rather than a general SMT solver, and that general contracts are validated via test assertions and fuzzing.
 
 ---
 

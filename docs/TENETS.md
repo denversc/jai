@@ -89,7 +89,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Principles:**
   - **Explicit Function Contracts:** Functions can declare formal preconditions (`pre`) and postconditions (`post`) directly on their signatures.
   - **Type Invariants:** Data structures can declare invariants that must hold true after instantiation and mutation.
-  - **Contract-Driven Verification & Testing:** Contracts can be statically validated during compile-time evaluation (CTFE), enforced during test and debug runs, and used to power automatic property-based fuzz testing.
+  - **Multi-Tier Contract Verification:** Contracts are evaluated at compile time during CTFE when expressions operate on compile-time constants; a small, tractable subset of simple structural invariants can be verified statically without a heavy generic solver, while general contracts are enforced via runtime assertions in debug/test builds and leveraged for property-based fuzz testing.
   - **Contract-as-Interface:** Calling agents rely entirely on the function's contract guarantees rather than needing to parse the function's internal body.
 
 ## 11. Deterministic, Unambiguous Grammar with Bounded Lookahead (Pratt / LL(k))
