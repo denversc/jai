@@ -188,6 +188,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   Target languages feature fundamentally divergent concurrency paradigms: Go (goroutines/CSP), TypeScript (single-threaded event loop/Promises), Rust (poll-based futures/Tokio), Python (asyncio), and Swift (actors/structured concurrency). The tenets are currently completely silent on async/await, threading, and I/O.
 * **Recommendation:**
   Add a dedicated tenet: **"Runtime-Agnostic Structured Concurrency"**, establishing structured nursery scopes, async/await primitives that lower idiomatic target constructs (Promises in TS, tasks in Python/Swift, futures in Rust, goroutines in Go), and deterministic sequential execution for CTFE and unit testing.
+* **Resolution:** **Ignored (Deferred to Language Design Specification).** Decided that concurrency and asynchronous programming models are language design specifications rather than foundational tenets for TENETS.md.
 
 ---
 
