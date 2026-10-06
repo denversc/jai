@@ -256,6 +256,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   Standardize markdown formatting globally:
   - Consistently include or omit `---` between all numbered tenets.
   - Standardize all principle bullets to the format: `- **<Concept Name>:** <Description>`.
+* **Resolution:** **Standardized Markdown Formatting Globally.** Added consistent horizontal rules (`---`) before every numbered tenet, and standardized all principle bullets to use bold topic headers (`- **<Topic Name>:** <Description>`).
 
 ---
 

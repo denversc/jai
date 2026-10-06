@@ -18,9 +18,9 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ## 2. Unambiguous, Orthogonal Grammar (Zero Hallucination Surface)
 * **Rationale:** Ambiguity, multiple valid ways to write the exact same construct, and complex operator precedence increase the probability of syntax errors and hallucinated patterns.
 * **Principles:**
-  - One clear, canonical way to express any given operation.
-  - Strictly deterministic context-free grammar constructs that are easy for both LLM probability distributions and compiler parsers to predict and validate.
-  - Strict syntax rules that disallow ambiguous edge cases (e.g., mandatory statement-terminating semicolons with zero automatic insertion heuristics, no implicit type coercions, no hidden scope-escaping variable shadowing).
+  - **Single Canonical Representation:** One clear, canonical way to express any given operation.
+  - **Deterministic CFG:** Strictly deterministic context-free grammar constructs that are easy for both LLM probability distributions and compiler parsers to predict and validate.
+  - **Zero Ambiguity Rules:** Strict syntax rules that disallow ambiguous edge cases (e.g., mandatory statement-terminating semicolons with zero automatic insertion heuristics, no implicit type coercions, no hidden scope-escaping variable shadowing).
 
 ---
 
@@ -46,19 +46,19 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ## 5. First-Class Compile-Time Evaluation (CTFE) & Metaprogramming
 * **Rationale:** Agents frequently need to generate repetitive glue or compute configuration/table values. Rather than writing external code generators or template scripts, this logic should live natively in the language.
 * **Principles:**
-  - A unified interpreter that allows executing Tick code at compile time (`comptime`).
-  - Pure functions that can resolve directly to constants at compile time.
-  - Ability to synthesize types, tables, and functions programmatically before transpilation passes.
+  - **Unified Compile-Time Interpreter:** A unified interpreter that allows executing Tick code at compile time (`comptime`).
+  - **Pure Const Evaluation:** Pure functions that can resolve directly to constants at compile time.
+  - **Programmatic Synthesis:** Ability to synthesize types, tables, and functions programmatically before transpilation passes.
 
 ---
 
 ## 6. Locality of Reasoning (Self-Contained Units)
 * **Rationale:** AI agents have finite attention and struggle when understanding a function requires chasing deeply nested inheritance, ambient global variables, or implicit dependencies across dozens of files.
 * **Principles:**
-  - Code must be understandable and verifiable using only its immediate local context and explicit signatures.
-  - No global mutable state; all data flow is explicit through function inputs, outputs, and ownership transfers.
-  - Local type inference only: type inference never leaks past function boundaries; all public APIs and boundary signatures are fully explicit.
-  - No implicit contextual "magic" (such as hidden thread-locals, ambient dependency injection, or invisible lifecycle hooks).
+  - **Local Context Verifiability:** Code must be understandable and verifiable using only its immediate local context and explicit signatures.
+  - **Zero Global Mutable State:** No global mutable state; all data flow is explicit through function inputs, outputs, and ownership transfers.
+  - **Strict Local Type Inference:** Local type inference only: type inference never leaks past function boundaries; all public APIs and boundary signatures are fully explicit.
+  - **Zero Ambient Magic:** No implicit contextual "magic" (such as hidden thread-locals, ambient dependency injection, or invisible lifecycle hooks).
 
 ---
 
@@ -70,15 +70,19 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Explicit Error Flow (Result Unions):** Recoverable errors are represented as typed return value unions/results (inspired by rich error aggregation proposals like Kotlin KEEP-0441 and languages like Rust and Zig). The caller is forced by the compiler to explicitly handle or intentionally propagate errors.
   - **Fatal-Only Exceptions:** Exceptions/panics are reserved exclusively for unrecoverable, fatal program failure (process death). They are never used for ordinary control flow.
 
+---
+
 ## 8. Single Canonical Representation (One Way To Do It)
 * **Rationale:** Languages with multiple syntactic forms for the same semantic construct (e.g., three different function declaration syntaxes, four looping constructs, truthy vs explicit checks) dilute LLM probability distributions, leading to inconsistent generation and edge-case bugs.
 * **Principles:**
-  - Exactly **one** canonical way to express any given operation or construct.
+  - **Single Canonical Construct:** Exactly **one** canonical way to express any given operation or construct.
   - **Single Function Syntax:** Unified declaration syntax for free functions, methods, and closures/lambdas.
   - **Single Iteration Model:** One unified loop construct rather than multiple overlapping primitives (`for`, `while`, `do-while`, `forEach`).
   - **Strict Boolean Conditions:** Conditionals (`if`, loop guards) require an explicit `bool` expression. No implicit "truthiness" (e.g., non-zero numbers, non-empty strings, or implicit null pointer conversions).
   - **Layout-Deterministic Delimiters:** Formatting rules (such as mandatory trailing commas on multi-line lists and forbidden on single-line lists) are compiler-enforced, preventing stylistic variance.
   - **Zero Syntactic Synonyms:** Eliminates stylistic fragmentation across AI-authored codebases.
+
+---
 
 ## 9. Token-Dense Grammar without Punitive Punctuation
 * **Rationale:** Traditional human languages are full of multi-token ceremony (`function`, `implements`, `public static void`) and punctuation that wastes finite LLM context windows or triggers tokenizer fragmentation and bracket-drift errors.
@@ -88,6 +92,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Robust Block Structure:** Avoid purely whitespace-sensitive indentation pitfalls (which cause off-by-one whitespace bugs in LLMs) while keeping block delimiters lightweight and easy for models to track and close.
   - **Zero Boilerplate Ceremony:** No mandatory enclosing classes or boilerplate namespaces required to author standalone functions, types, or tests.
 
+---
+
 ## 10. First-Class Invariants & Contract Verification
 * **Rationale:** Specifying explicit constraints as formal contracts allows AI agents to reason about code soundness locally, author robust logic without hallucinations, and verify behavior without needing to read distant implementation details.
 * **Principles:**
@@ -95,6 +101,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Type Invariants:** Data structures can declare invariants that must hold true after instantiation and mutation.
   - **Multi-Tier Contract Verification:** Contracts are evaluated at compile time during CTFE when expressions operate on compile-time constants; a small, tractable subset of simple structural invariants can be verified statically without a heavy generic solver, while general contracts are enforced via runtime assertions in debug/test builds and leveraged for property-based fuzz testing.
   - **Contract-as-Interface:** Calling agents rely entirely on the function's contract guarantees rather than needing to parse the function's internal body.
+
+---
 
 ## 11. Decoupled, Single-Pass Syntactic Parsing (Zero Semantic Feedback)
 * **Rationale:** While LLMs generate code strictly autoregressively (left-to-right, one token at a time) without future lookahead, compiler parsing is deterministic with bounded lookahead. Pass 1 is strictly a single-pass syntactic check that constructs a valid AST from the token stream using bounded lookahead (Pratt parsing for expressions, LL(k) for declarations), completely independent of symbol tables or type information. Languages that require unbounded lookahead, backtracking, or semantic type-feedback during parsing (such as C/C++ where parsing depends on symbol tables to distinguish types from expressions) induce high-frequency syntax generation errors.
@@ -105,6 +113,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Unambiguous Generic Delimiters:** Generic parameters use unambiguous delimiters (such as bracketed generics `[T]`) to eliminate lookahead ambiguities and parser backtracking.
   - **Sub-Millisecond Parse Performance:** Pure syntactic parsing enables instant structural feedback for AI agent drafting and validation loops.
 
+---
+
 ## 12. Composable, Flat Typing over Deep Inheritance (Traits Only)
 * **Rationale:** Class implementation inheritance hierarchies introduce fragile base class problems, complex method resolution order (MRO) bugs, and hidden parent state mutations that confuse AI reasoning. Crucially, implementation inheritance maps poorly and inconsistently across targets (Rust and Go lack it entirely).
 * **Principles:**
@@ -112,6 +122,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Pure Data & Pure Interfaces:** Clean separation between pure data records/structs and behavioral interface contracts (`trait`).
   - **Composition Over Inheritance:** Code reuse is achieved via explicit data composition and trait implementation.
   - **Universal Transpilation Alignment:** Maps seamlessly 1:1 onto Rust `trait`, Swift `protocol`, Kotlin/Java `interface`, TypeScript `interface`, and Go `interface`.
+
+---
 
 ## 13. First-Class Native Testing & Verification
 * **Rationale:** Writing tests in traditional ecosystems forces AI agents to juggle disparate testing frameworks, annotation magic, and external harnesses (e.g., JUnit, pytest, Vitest, XCTest), resulting in mismatched assertions and environment confusion.
@@ -122,6 +134,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
     - **Fast Local Feedback:** Tests run instantly in Tick's native interpreter (`tick test`) for sub-second agent drafting and CTFE iteration loops.
     - **Authoritative Target Verification:** Tests automatically transpile into target test suites (e.g., `#[test]` in Rust, `pytest` in Python, `XCTest` in Swift), serving as the authoritative ground truth for cross-compiled behavior across all platforms.
 
+---
+
 ## 14. Lossless Comments & Intent Anchors
 * **Rationale:** AI agents collaborate by reading and writing rationale alongside code. When comments are treated as disposable compiler trivia, critical context and downstream documentation are lost during compilation and transpilation.
 * **Principles:**
@@ -129,12 +143,16 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Target-Idiomatic Doc Emission:** Comments authored in Tick are automatically transformed into native documentation standards in generated target code (e.g., KDoc for Kotlin, DocC `///` for Swift, docstrings `"""` for Python, Rustdoc `///` for Rust, JSDoc for TypeScript).
   - **Structured Intent Anchors:** Standard, token-efficient annotations (e.g., `/// @why`, `/// @invariant`) allow agents to communicate critical design rationale with minimal token overhead.
 
+---
+
 ## 15. Semantic Diff & Patch Stability (Minimal Syntax Churn)
 * **Rationale:** AI agents modify codebases primarily through line diffs and targeted block replacements. Syntactic choices that trigger cascading edits (like re-indenting entire files or juggling missing commas on adjacent lines) inflate patch token costs and create merge/patch collisions.
 * **Principles:**
   - **Canonical Trailing Commas:** Trailing commas are mandatory for all multi-line lists (argument lists, struct fields, match arms, arrays) to ensure modifying an element touches exactly one isolated line, and strictly forbidden on single-line lists, enforcing exactly one canonical representation per layout.
   - **Zero Indentation-Cascade Traps:** Block scoping prevents massive whitespace reflow diffs when nesting or un-nesting logic.
   - **Localized Statement Boundaries:** Statements and declarations are self-terminating or clearly bounded, ensuring patch tools and agents can apply atomic, surgical edits.
+
+---
 
 ## 16. Immutable Defaults, Move-By-Default & Reusable Identifiers
 * **Rationale:** Uncontrolled mutable aliasing and hidden in-place object mutations across function calls are leading causes of silent regressions in AI-generated code.
@@ -144,6 +162,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Explicit Lexical Shadowing:** Re-declaring a binding with `let` in the same scope legally shadows prior bindings of the same identifier. This eliminates synthetic variable churn (`user1`, `user2`, `updated_user`) while preserving deterministic lexical scoping and enabling unambiguous transpiler renaming (`user_1`, `user_2`) for targets that disallow shadowing.
   - **Zero Aliasing Ambiguity:** Multiple concurrent mutable references to the same data are strictly forbidden at compile time.
 
+---
+
 ## 17. Exhaustive Null Safety (No Implicit Missing Values)
 * **Rationale:** Implicit null pointer and undefined reference exceptions represent the single most frequent category of runtime bugs in AI-authored code.
 * **Principles:**
@@ -151,6 +171,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **No Implicit Null Literals:** Missing or optional values are represented exclusively through explicit, typed algebraic optionality rather than untyped universal null pointers.
   - **Compiler-Enforced Unwrapping:** Accessing fields or methods on an optional value without explicit checking or pattern-matching is a compile-time error.
   - **Universal Target Mapping:** Maps natively to the target languages' modern optionality systems (e.g., Swift optionals, Kotlin nullable types, Rust optional types, TypeScript union types).
+
+---
 
 ## 18. Order-Independent Declarations (Safe Append-Only Generation)
 * **Rationale:** In languages where declaration order matters (or where forward declarations and temporal dead zones exist), AI agents frequently fail when appending new helper functions or types to existing files. Because syntax parsing (Pass 1) is cleanly decoupled from semantic analysis, subsequent passes traverse the complete AST to resolve symbol tables, check types, and verify methods, making top-level declarations fully order-independent and safe for append-only generation.
@@ -160,6 +182,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Safe Append-Only Modification:** AI agents can append new symbols to the end of a file with guaranteed reference resolution by earlier functions in that file.
   - **Zero Temporal Dead Zones:** Resolving top-level symbols is declarative rather than dependent on linear script execution ordering.
 
+---
+
 ## 19. Single Unified Toolchain (Zero Configuration Sprawl)
 * **Rationale:** In fragmented ecosystems (e.g., JS/TS or Python), AI agents waste significant token budget and tool invocations reconciling disparate, conflicting external tools (formatters, linters, test harnesses, bundlers) and drifting config files.
 * **Principles:**
@@ -168,6 +192,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Minimal Configuration & Pure Code Generation (`tick.toml`):** A single minimal configuration file (`tick.toml`) configures Tick compiler and transpilation settings. Tick focuses strictly on generating source code and source maps, leaving downstream project packaging and target package manifests (`package.json`, `Cargo.toml`, `pyproject.toml`) to the developer or authoring agent.
   - **Uniform Machine-Readable Interface:** Every toolchain command provides standardized structured output (e.g., `--format=json`) so agents can parse results, errors, and diffs programmatically without brittle text scraping.
 
+---
+
 ## 20. Stable Error Codes & Actionable Repair Recipes
 * **Rationale:** Generic prose error messages force AI agents to guess at solutions, often leading to counterproductive trial-and-error edits or incorrect type casts.
 * **Principles:**
@@ -175,12 +201,16 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Machine-Queryable Repair Recipes:** The toolchain provides canonical repair templates via CLI (e.g., `tick explain E0142`) and structured JSON output, explicitly demonstrating the violated invariant and the exact pattern to resolve it.
   - **Deterministic Self-Healing Loops:** Provides AI coding agents with direct, deterministic paths to fix syntax and type discrepancies in a single edit step.
 
+---
+
 ## 21. Explicit Capabilities & Zero Ambient Environment Access
 * **Rationale:** Implicit access to ambient host state (system clocks, environment variables, hardware randomness, unconstrained filesystem paths) introduces non-determinism, breaks compile-time execution (CTFE), and creates subtle platform incompatibilities when transpiling between mobile SDKs and backends.
 * **Principles:**
   - **Zero Implicit Ambient Access:** Code cannot implicitly reach into host environment variables, read system timestamps, or generate entropy without an explicit capability or context passed in.
   - **Deterministic Compile-Time Evaluation:** All logic executed at compile time (CTFE) is guaranteed to produce byte-for-byte identical results regardless of host OS, architecture, or environment.
   - **Testability & Portability:** Functions that interact with the outside world require explicit handles, ensuring unit tests can mock or control environmental factors effortlessly across all target platforms.
+
+---
 
 ## 22. Native Semantic Slicing & Codebase Introspection
 * **Rationale:** Navigating large multi-file codebases forces AI agents to consume vast token budgets reading irrelevant function bodies and implementation details just to understand API surfaces or change impact.
