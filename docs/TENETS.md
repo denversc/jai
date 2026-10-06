@@ -114,8 +114,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Native Language Construct:** Tests are first-class syntax within the language (e.g., `test "name" { ... }`), placed directly adjacent to the units they verify without requiring external framework imports.
   - **Zero-Boilerplate Assertions:** Built-in assertion primitives with rich, machine-readable diff output on failure.
   - **Dual-Verification Model:**
-    - Tests run instantly in Tick's native interpreter (`tick test`) for sub-second agent iteration loops.
-    - Tests automatically transpile into target test suites (e.g., `#[test]` in Rust, `pytest` in Python, `XCTest` in Swift) to verify that cross-compiled outputs behave identically across all platforms.
+    - **Fast Local Feedback:** Tests run instantly in Tick's native interpreter (`tick test`) for sub-second agent drafting and CTFE iteration loops.
+    - **Authoritative Target Verification:** Tests automatically transpile into target test suites (e.g., `#[test]` in Rust, `pytest` in Python, `XCTest` in Swift), serving as the authoritative ground truth for cross-compiled behavior across all platforms.
 
 ## 14. Lossless Comments & Intent Anchors
 * **Rationale:** AI agents collaborate by reading and writing rationale alongside code. When comments are treated as disposable compiler trivia, critical context and downstream documentation are lost during compilation and transpilation.
@@ -157,7 +157,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ## 19. Single Unified Toolchain (Zero Configuration Sprawl)
 * **Rationale:** In fragmented ecosystems (e.g., JS/TS or Python), AI agents waste significant token budget and tool invocations reconciling disparate, conflicting external tools (formatters, linters, test harnesses, bundlers) and drifting config files.
 * **Principles:**
-  - **All-in-One Canonical Binary:** The core `tick` toolchain natively integrates formatting, linting, type-checking, testing, transpilation, and execution into a single binary.
+  - **All-in-One Canonical Binary:** The core `tick` toolchain natively integrates formatting, linting, type-checking, testing, transpilation, and local test interpretation into a single binary.
   - **Zero Config Churn:** Sane, strict, opinionated defaults work out of the box without requiring sprawling configuration files across repositories.
   - **Uniform Machine-Readable Interface:** Every toolchain command provides standardized structured output (e.g., `--format=json`) so agents can parse results, errors, and diffs programmatically without brittle text scraping.
 
