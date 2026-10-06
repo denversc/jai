@@ -74,6 +74,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   - Emitting deterministic *physical data layout* into Python or JS would require compilation to raw `ctypes` or flat byte buffers, directly violating the requirement of generating clean, idiomatic target code without heavy runtime shims ([line 191](file:///Volumes/dev/me/jai/docs/TENETS.md#L191)).
 * **Recommendation:**
   Reframe Line 190 to guarantee **deterministic abstract execution semantics and value equivalence** (e.g., strictly defined evaluation order, integer overflow rules, and value semantics) rather than physical data layout and memory behavior.
+* **Resolution:** **Adopted Deterministic Execution Semantics & Value Equivalence.** Updated Tenet 23 to guarantee identical abstract execution semantics, evaluation order, and value behavior across targets rather than technically infeasible physical memory layout parity.
 
 ---
 

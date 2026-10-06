@@ -188,5 +188,5 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Rationale:** Tick code must transpile faithfully and idiomatically to targets like Rust, Python, TypeScript, Swift, and Kotlin.
 * **Principles:**
   - Language primitives must represent the clean intersection of modern target semantics, avoiding reliance on quirks unique to any single host runtime.
-  - Deterministic data layout and memory behavior ensure that business logic behaves identically whether running in Python, Swift, or Rust.
+  - Deterministic execution semantics and value equivalence ensure that business logic behaves identically across all targets (Python, Swift, Rust), without depending on host-specific physical memory layouts or garbage-collection implementations.
   - Standard library abstractions are designed to map to target language idioms rather than forcing heavy runtime shims.
