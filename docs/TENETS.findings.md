@@ -206,6 +206,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   Certain real-world functionality or performance optimizations are target-specific (e.g., DOM/WebSockets in browser/Node vs raw TCP/SIMD in Rust/Go). Without conditional compilation, Tick falls into a lowest-common-denominator trap where target-specific capabilities can never be leveraged.
 * **Recommendation:**
   Add a dedicated tenet: **"Explicit Target Specialization & Conditional Compilation"**, defining token-efficient platform guards (e.g., `@target(rust)`) with compiler-enforced exhaustive coverage across all active targets.
+* **Resolution:** **Ignored (Deferred to Language Design Specification).** Decided that conditional compilation and target specialization mechanisms belong in language design specifications rather than foundational tenets for TENETS.md.
 
 ---
 
