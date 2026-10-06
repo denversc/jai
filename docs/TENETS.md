@@ -64,7 +64,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Principles:**
   - **No Implicit Conversions:** Type casting and conversions must always be explicit.
   - **Deterministic Evaluation Order:** Strict, unambiguous left-to-right evaluation across all expressions.
-  - **Explicit Error Flow (Result Unions):** Recoverable errors are represented as typed return value unions/results (inspired by rich error aggregation patterns like Kotlin). The caller is forced by the compiler to explicitly handle or intentionally ignore errors.
+  - **Explicit Error Flow (Result Unions):** Recoverable errors are represented as typed return value unions/results (inspired by rich error aggregation proposals like Kotlin KEEP-0441 and languages like Rust and Zig). The caller is forced by the compiler to explicitly handle or intentionally propagate errors.
   - **Fatal-Only Exceptions:** Exceptions/panics are reserved exclusively for unrecoverable, fatal program failure (process death). They are never used for ordinary control flow.
 
 ## 8. Single Canonical Representation (One Way To Do It)

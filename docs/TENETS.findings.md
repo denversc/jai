@@ -62,6 +62,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   - Kotlin does **not** enforce compile-time error handling. All exceptions in Kotlin are unchecked (`RuntimeException`). Kotlin's standard library `Result<T>` does not force call-site handling, nor is it an algebraic sum type enforced by the compiler.
 * **Recommendation:**
   Attribute the pattern to languages that actually enforce compile-time handled Result types: **Rust** (`Result<T, E>`), **Zig** (error sets and unions `!T`), or **Swift** (typed `throws` and `Result<T, E>`).
+* **Resolution:** **Clarified Reference to Kotlin KEEP-0441.** Updated Tenet 7 to explicitly cite Kotlin KEEP-0441 (Rich Errors proposal) alongside Rust and Zig, accurately reflecting the inspiration for typed error unions and compiler-enforced handling.
 
 ---
 
