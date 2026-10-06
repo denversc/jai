@@ -179,6 +179,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   When generated code fails target compilation or runtime testing (e.g., `rustc` borrow errors, `tsc` type errors, or Python exceptions), the failure occurs at a line/column in generated target files (e.g., `dist/main.rs:142:10`). If the toolchain cannot deterministically map target errors back to Tick AST tokens (`src/main.tick:25`), AI agent repair loops break—forcing agents to patch generated code directly and abandoning Tick as the source of truth.
 * **Recommendation:**
   Add a dedicated tenet: **"Bi-Directional Source Mapping & Target Diagnostic Ingestion"**, mandating high-fidelity token-level source maps and CLI diagnostic ingestion that intercepts `rustc`/`tsc`/`mypy` errors and projects them back into Tick source spans in structured JSON.
+* **Resolution:** **Adopted High-Fidelity Token Source Maps.** Updated Tenet 4 to mandate token-level source maps from transpilation to allow external harnesses to project downstream target errors back to Tick AST positions, while keeping Tick cleanly decoupled from invoking downstream compilers.
 
 ---
 

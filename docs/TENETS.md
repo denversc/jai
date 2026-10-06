@@ -35,9 +35,10 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ## 4. Agentic Diagnostic & Repair Ergonomics
 * **Rationale:** When an AI agent makes a syntax or semantic error, traditional human compiler diagnostics often lack actionable precision, resulting in endless debugging loops.
 * **Principles:**
-  - Compiler errors and warnings must be machine-actionable, providing structured output (e.g., JSON schemas) alongside human-readable text.
-  - Diagnostics must provide exact source spans, clear explanations of failed invariants, and suggested canonical patches/fixes that the agent can apply directly.
-  - Fast feedback loops: instantaneous compiler checks allow agents to validate drafts in sub-second cycles.
+  - **Machine-Actionable Structured Diagnostics:** Compiler errors and warnings must be machine-actionable, providing structured output (e.g., JSON schemas) alongside human-readable text.
+  - **Precise Spans & Remediation Patches:** Diagnostics must provide exact source spans, clear explanations of failed invariants, and suggested canonical patches/fixes that the agent can apply directly.
+  - **High-Fidelity Token Source Maps:** Transpilation generates precise, token-level source maps linking all emitted target constructs back to their originating Tick AST spans, enabling external build harnesses and agent toolchains to trace downstream compiler errors or runtime stack traces directly back to Tick source.
+  - **Sub-Second Validation Cycles:** Fast feedback loops: instantaneous compiler checks allow agents to validate drafts in sub-second cycles.
 
 ---
 
