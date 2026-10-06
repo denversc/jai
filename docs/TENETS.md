@@ -18,7 +18,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Principles:**
   - One clear, canonical way to express any given operation.
   - Context-free and regular grammar constructs that are easy for both LLM probability distributions and compiler parsers to predict and validate.
-  - Strict syntax rules that disallow ambiguous edge cases (e.g., no optional semicolons, no implicit type coercions, no hidden variable shadow surprises).
+  - Strict syntax rules that disallow ambiguous edge cases (e.g., mandatory statement-terminating semicolons with zero automatic insertion heuristics, no implicit type coercions, no hidden variable shadow surprises).
 
 ---
 
@@ -79,8 +79,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ## 9. Token-Dense Grammar without Punitive Punctuation
 * **Rationale:** Traditional human languages are full of multi-token ceremony (`function`, `implements`, `public static void`) and punctuation that wastes finite LLM context windows or triggers tokenizer fragmentation and bracket-drift errors.
 * **Principles:**
-  - **Single-Token Keywords:** Favor concise, established keywords that tokenize into single BPE tokens (e.g., `fn`, `let`, `mut`, `ret`, `type`, `use`).
-  - **No Redundant Punctuation:** Semicolons and boilerplate punctuation are not mandatory where line endings or clear delimiters suffice.
+  - **Deterministic Statement Termination:** Mandatory semicolons terminate statements, eliminating complex Automatic Semicolon Insertion (ASI) heuristics and ensuring multi-line expressions and refactoring patches never terminate prematurely.
+  - **No Redundant Punctuation:** Eliminate superfluous parentheses, braces, or decorative ceremony where grammar constructs are already unambiguous.
   - **Robust Block Structure:** Avoid purely whitespace-sensitive indentation pitfalls (which cause off-by-one whitespace bugs in LLMs) while keeping block delimiters lightweight and easy for models to track and close.
   - **Zero Boilerplate Ceremony:** No mandatory enclosing classes or boilerplate namespaces required to author standalone functions, types, or tests.
 
