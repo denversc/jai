@@ -243,6 +243,7 @@ Below is the consolidated, deduplicated synthesis of all findings, enumerated se
   Although Tick is authored by AI agents, its transpiled output lives in real-world repositories where human engineers conduct code reviews, security teams audit pull requests, and CI systems run linters (`cargo clippy`, `ruff`, `eslint`, `go fmt`). If Tick produces obfuscated, mangled code, it will be rejected as unmaintainable supply-chain risk.
 * **Recommendation:**
   Add a dedicated tenet: **"Target-Idiomatic Emission & Human Auditability"**, requiring generated code to pass target linters cleanly with zero warnings, adhere to target casing conventions, and read as natural, high-quality human-written code.
+* **Resolution:** **Formulated Ephemeral Build Artifact Principle (Anti-Tenet Clarification).** Clarified that generated target code is an on-demand ephemeral build artifact rather than checked-in source code. Updated Tenet 23 to state that Tick guarantees symbolic traceability and general debug legibility without guaranteeing human aesthetic elegance or target linter compliance.
 
 ---
 
