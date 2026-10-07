@@ -50,10 +50,13 @@ Tick provides fixed-width signed and unsigned integers, as well as pointer-sized
 * `usize`: Unsigned integer with the same bit-width as a pointer/memory address on the target architecture. Primarily used for collection indexing, container lengths, and memory offsets.
 * `isize`: Signed integer with the same bit-width as a pointer/memory address on the target architecture. Primarily used for pointer or offset differences.
 
+#### Arbitrary-Precision Integer
+* `bigint`: Signed arbitrary-precision integer capable of representing integers of theoretically unbounded size (constrained only by available system memory).
+
 ### Integer Literals
 
 * **Decimal Only:** Integer literals are represented strictly in decimal (base 10). Alternate base prefixes (such as hexadecimal `0x`, binary `0b`, or octal `0o`) are not supported.
-* **No Literal Suffixes:** Integer literals do not permit type suffixes (for example, `42_i32` and `42i32` are invalid syntax).
+* **No Literal Suffixes:** Integer literals do not permit type suffixes (for example, `42_i32`, `42i32`, or `42n` are invalid syntax).
 * **Digit Separators:** Underscores (`_`) are permitted as digit separators to enhance readability (e.g., `1_000_000`, `42_000`).
   * An underscore cannot appear as the first character of a number literal (which would conflict with identifier syntax).
   * An underscore cannot appear as the trailing character of a literal (e.g., `100_` is invalid).
@@ -63,9 +66,15 @@ Tick provides fixed-width signed and unsigned integers, as well as pointer-sized
   let x = 42; // x is inferred as i32
   let y = -24; // y is inferred as i32
   ```
+* **Literals Exceeding `i32` Range:** If an integer literal exceeds the representable range of `i32`, it is a compile-time error unless an explicit type annotation or conversion specifies a larger type (such as `i64` or `bigint`):
+  ```tick
+  let a: bigint = 999999999999999999999999999999; // Valid: explicit type annotation
+  let b = bigint(999999999999999999999999999999); // Valid: explicit conversion
+  let c = 999999999999999999999999999999;         // Compile error: exceeds i32 range; annotation required
+  ```
 
 ### Conversions & Type Invariants
 
-* **Strictly Explicit Conversions:** There are zero implicit conversions between numeric types (no implicit widening and no implicit narrowing). Converting between any integer types (such as `u8` to `i32`, `i32` to `i64`, or `usize` to `u32`) requires an explicit type conversion.
-* **Zero Mixed-Type Arithmetic:** Binary arithmetic and bitwise operations require both operands to have the exact same integer type. Mixing types without an explicit conversion is a compile-time error.
+* **Strictly Explicit Conversions:** There are zero implicit conversions between numeric types (no implicit widening and no implicit narrowing). Converting between any integer types (such as `u8` to `i32`, `i32` to `i64`, `usize` to `u32`, or `i32` to `bigint`) requires an explicit type conversion.
+* **Zero Mixed-Type Arithmetic:** Binary arithmetic and bitwise operations require both operands to have the exact same integer type. Mixing types without an explicit conversion is a compile-time error. For example, operating on a `bigint` with a fixed-width integer requires explicitly converting the operand (e.g., `b + bigint(1)`).
 
