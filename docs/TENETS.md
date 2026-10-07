@@ -22,9 +22,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Single-Token Keywords:** Favor concise, established keywords that tokenize into single BPE tokens (e.g., `fn`, `let`, `mut`, `ret`, `type`, `use`).
   - **Empirical Tokenizer Alignment (BPE Vocabulary Co-Design):** Keywords, operators, delimiter sequences, and canonical formatting conventions (such as indentation width) are empirical choices co-designed and benchmarked against frontier LLM tokenizers to guarantee single-token representations and eliminate multi-token punctuation splintering.
   - **Semantic Token ROI (Investment Over Waste):** High token efficiency does not mean omitting specification; tokens invested in formal contracts (`pre`/`post`), type invariants, and intent anchors (`@why`) yield high net token savings by eliminating multi-file context expansion, defensive runtime boilerplate, and iterative debugging turns.
-  - **Deterministic Statement Termination:** Mandatory semicolons terminate statements, eliminating complex Automatic Semicolon Insertion (ASI) heuristics and ensuring multi-line expressions and refactoring patches never terminate prematurely.
-  - **No Redundant Punctuation:** Eliminate superfluous parentheses, braces, or decorative ceremony where grammar constructs are already unambiguous.
-  - **Robust Block Structure:** Avoid purely whitespace-sensitive indentation pitfalls (which cause off-by-one whitespace bugs in LLMs) while keeping block delimiters lightweight and easy for models to track and close.
+  - **No Redundant Decorative Punctuation:** Eliminate superfluous parentheses around control conditions, redundant type annotations where locally unambiguous, and decorative ceremony where grammar constructs are already unambiguous.
 
 ---
 
@@ -56,7 +54,8 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Rationale:** AI agents modify codebases primarily through line diffs and targeted block replacements. Syntactic choices that trigger cascading edits inflate patch token costs and create merge collisions.
 * **Principles:**
   - **Canonical Trailing Commas:** Trailing commas are mandatory for all multi-line lists (argument lists, struct fields, match arms, arrays) to ensure modifying an element touches exactly one isolated line, and strictly forbidden on single-line lists, enforcing exactly one canonical representation per layout.
-  - **Zero Indentation-Cascade Traps:** Explicit block scoping prevents massive whitespace reflow diffs when nesting or un-nesting logic.
+  - **Deterministic Statement Termination (Mandatory Semicolons):** Mandatory semicolons explicitly terminate statements. This eliminates ambiguous Automatic Semicolon Insertion (ASI) heuristics, guarantees that multi-line expressions never break across line diffs, and prevents patches from terminating statements prematurely.
+  - **Robust Explicit Block Structure (Zero Indentation Cascades):** Explicit block scoping prevents massive whitespace reflow diffs when nesting or un-nesting logic, eliminating off-by-one whitespace slips and indentation-cascade traps common in whitespace-sensitive languages.
   - **Localized Statement Boundaries:** Statements and declarations are self-terminating or clearly bounded, ensuring patch tools and agents can apply atomic, surgical edits.
 
 ---
