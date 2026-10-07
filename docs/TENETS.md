@@ -123,11 +123,11 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 ---
 
 ## 12. Deterministic Compile-Time Evaluation (CTFE) & Explicit Capabilities
-* **Rationale:** Agents frequently need to generate glue code or compute configuration tables natively. Furthermore, implicit access to ambient host state breaks compile-time execution and introduces platform non-determinism.
+* **Rationale:** Agents frequently need to compute lookup tables, constants, and precomputed static data arrays natively without runtime initialization overhead. Furthermore, implicit access to ambient host state breaks compile-time execution and introduces platform non-determinism.
 * **Principles:**
-  - **Unified Compile-Time Interpreter:** A unified interpreter that allows executing Tick code at compile time (`comptime`).
-  - **Pure Const Evaluation:** Pure functions resolve directly to constants at compile time.
-  - **Programmatic Synthesis:** Ability to synthesize types, tables, and functions programmatically before transpilation passes.
+  - **Unified Compile-Time Interpreter:** A unified interpreter that allows executing pure Tick code at compile time (`comptime`).
+  - **Pure Constant Evaluation & Static Data Generation:** CTFE is strictly scoped to pure constant expression evaluation and static data generation (e.g., precomputing lookup tables, numeric constants, and static data arrays).
+  - **Explicit Source Declarations (Zero Dynamic Code Synthesis):** CTFE cannot dynamically synthesize arbitrary types, signatures, or functions. All types, interfaces, and functions must be declared explicitly in author-written Tick source code, strictly preserving Pass 1 single-pass syntactic AST construction and ensuring every emitted target construct maps 1:1 to an explicit author-written Tick AST token span in source maps.
   - **Zero Implicit Ambient Access:** Code cannot implicitly reach into host environment variables, read system timestamps, or generate entropy without an explicit capability handle passed in.
   - **Deterministic CTFE:** All logic executed at compile time (CTFE) is guaranteed to produce byte-for-byte identical results regardless of host OS, architecture, or environment.
   - **Testability & Portability:** Functions that interact with the outside world require explicit handles, ensuring unit tests can mock environmental factors effortlessly across all target platforms.
