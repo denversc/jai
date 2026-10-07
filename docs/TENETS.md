@@ -37,6 +37,7 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
   - **Unambiguous Generic Delimiters:** Generic parameters use unambiguous delimiters (such as bracketed generics `[T]`) to eliminate lookahead ambiguities and parser backtracking.
   - **Pure Single-Pass Syntactic AST Construction (Pass 1):** Pass 1 is strictly a single-pass syntactic check that constructs a valid AST from the token stream using bounded lookahead (combining LL(k) declarations and Pratt expression parsing), completely independent of symbol tables or type information.
   - **Zero Lexer/Parser Semantic Feedback:** Parsing grammar never requires knowing whether an identifier is a type, variable, or function (unlike C/C++). Lexing and parsing operate with zero semantic feedback loops.
+  - **Order-Independent Declarations (Multi-Pass Semantics):** Pure syntactic parsing (Pass 1) enables subsequent semantic passes to resolve symbol tables and check types across the entire AST, guaranteeing order-independent symbol declarations and enabling safe append-only declarations for AI agents.
   - **Layout-Deterministic Delimiters:** Formatting rules are compiler-enforced to prevent stylistic variance.
 
 ---
@@ -138,7 +139,6 @@ This document establishes the foundational design tenets of **Tick**. Unlike tra
 * **Principles:**
   - **All-in-One Canonical Binary:** The core `tick` toolchain natively integrates formatting, linting, type-checking, testing, transpilation, and local test interpretation into a single binary.
   - **Minimal Configuration & Pure Code Generation (`tick.toml`):** A single minimal configuration file (`tick.toml`) configures Tick compiler and transpilation settings. Tick focuses strictly on generating source code and source maps, leaving downstream project packaging and target package manifests (`package.json`, `Cargo.toml`, `pyproject.toml`) to the developer or authoring agent.
-  - **Order-Independent Declarations (Multi-Pass Semantics):** Pure syntactic parsing (Pass 1) enables subsequent semantic passes to resolve symbol tables and check types across the entire AST, guaranteeing order-independent symbol declarations and safe append-only modifications for AI agents.
   - **Dual-Verification Model:** Tick's language specification and native execution semantics are the single, authoritative ground truth.
     - *Fast Local Feedback:* Tests run instantly in Tick's native interpreter (`tick test`) to verify business logic against Tick's canonical semantics during drafting and CTFE iteration loops.
     - *Target Conformance Verification:* Target test suites (e.g., `#[test]` in Rust, `pytest` in Python, `XCTest` in Swift) verify transpilation conformance and backend regression resistance (ensuring the transpiler faithfully preserved Tick's canonical semantics on target platforms), rather than target platforms acting as competing/divergent ground truths.
